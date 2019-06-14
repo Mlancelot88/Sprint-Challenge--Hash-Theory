@@ -7,8 +7,25 @@ Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
 
-  /* YOUR CODE HERE */
-
+  for (int i = 0; i < length; i++)
+  {
+    int weight = weights[i];
+    int key = limit - weight;
+    // check if pair exists; table returns -1 if nothing is found
+    if (hash_table_retrieve(ht, weight) != -1)
+    {
+      // clear up space for output in the Answer structure
+      Answer *output = malloc(sizeof(Answer *));
+      // first ouput generated in index_1
+      output->index_1 = i;
+      // retrieve smaller index for index_2
+      output->index_2 = hash_table_retrieve(ht, weight);
+      // clears ht garbage
+      destroy_hash_table(ht);
+      return output;
+    }
+    hash_table_insert(ht, key, i);
+  }
   return NULL;
 }
 
